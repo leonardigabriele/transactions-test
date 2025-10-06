@@ -24,6 +24,8 @@ export default async function HomePage() {
         transactionID: transactionID!,
       },
     })
+    console.log(`Created document with ID: ${id}`)
+
     const newDoc = await payload.update({
       collection: 'events',
       id,
@@ -34,6 +36,8 @@ export default async function HomePage() {
         transactionID: transactionID!,
       },
     })
+
+    console.log(`Updated document with ID: ${id}`)
 
     await payload.db.commitTransaction(transactionID!)
     console.log(newDoc)
