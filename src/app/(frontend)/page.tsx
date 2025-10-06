@@ -18,8 +18,9 @@ export default async function HomePage() {
     const { id } = await payload.create({
       collection: 'events',
       data: {
-        title: 'Old title',
+        title: 'Titolo italiano',
       },
+      locale: 'it',
       req: {
         transactionID: transactionID!,
       },
@@ -30,8 +31,9 @@ export default async function HomePage() {
       collection: 'events',
       id,
       data: {
-        title: 'New title',
+        title: 'English title',
       },
+      locale: 'en',
       req: {
         transactionID: transactionID!,
       },
