@@ -15,6 +15,7 @@ export const Events: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
   ],
 }
