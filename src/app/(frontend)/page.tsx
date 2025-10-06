@@ -1,4 +1,3 @@
-import { headers as getHeaders } from 'next/headers.js'
 import Image from 'next/image'
 import { getPayload } from 'payload'
 import React from 'react'
@@ -8,12 +7,37 @@ import config from '@/payload.config'
 import './styles.css'
 
 export default async function HomePage() {
-  const headers = await getHeaders()
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
-
   const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
+
+  async function createUpdate(formData: FormData) {
+    'use server'
+    const payloadConfig = await config
+    const payload = await getPayload({ config: payloadConfig })
+    const transactionID = await payload.db.beginTransaction()
+
+    const { id } = await payload.create({
+      collection: 'events',
+      data: {
+        title: 'Old title',
+      },
+      req: {
+        transactionID: transactionID!,
+      },
+    })
+    const newDoc = await payload.update({
+      collection: 'events',
+      id,
+      data: {
+        title: 'New title',
+      },
+      req: {
+        transactionID: transactionID!,
+      },
+    })
+
+    await payload.db.commitTransaction(transactionID!)
+    console.log(newDoc)
+  }
 
   return (
     <div className="home">
@@ -27,26 +51,9 @@ export default async function HomePage() {
             width={65}
           />
         </picture>
-        {!user && <h1>Welcome to your new project.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Go to admin panel
-          </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
-        </div>
+        <form action={createUpdate}>
+          <button type="submit">Start transaction</button>
+        </form>
       </div>
       <div className="footer">
         <p>Update this page by editing</p>
