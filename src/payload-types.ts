@@ -69,7 +69,10 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    events: Event;
+    ones: One;
+    twos: Two;
+    threes: Three;
+    fours: Four;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -78,7 +81,10 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    events: EventsSelect<false> | EventsSelect<true>;
+    ones: OnesSelect<false> | OnesSelect<true>;
+    twos: TwosSelect<false> | TwosSelect<true>;
+    threes: ThreesSelect<false> | ThreesSelect<true>;
+    fours: FoursSelect<false> | FoursSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -160,11 +166,47 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "events".
+ * via the `definition` "ones".
  */
-export interface Event {
+export interface One {
   id: number;
   title: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "twos".
+ */
+export interface Two {
+  id: number;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "threes".
+ */
+export interface Three {
+  id: number;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fours".
+ */
+export interface Four {
+  id: number;
+  title: string;
+  ones?: (number | One)[] | null;
+  twos?: (number | Two)[] | null;
+  threes?: (number | Three)[] | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -185,8 +227,20 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'events';
-        value: number | Event;
+        relationTo: 'ones';
+        value: number | One;
+      } | null)
+    | ({
+        relationTo: 'twos';
+        value: number | Two;
+      } | null)
+    | ({
+        relationTo: 'threes';
+        value: number | Three;
+      } | null)
+    | ({
+        relationTo: 'fours';
+        value: number | Four;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -272,10 +326,43 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "events_select".
+ * via the `definition` "ones_select".
  */
-export interface EventsSelect<T extends boolean = true> {
+export interface OnesSelect<T extends boolean = true> {
   title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "twos_select".
+ */
+export interface TwosSelect<T extends boolean = true> {
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "threes_select".
+ */
+export interface ThreesSelect<T extends boolean = true> {
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fours_select".
+ */
+export interface FoursSelect<T extends boolean = true> {
+  title?: T;
+  ones?: T;
+  twos?: T;
+  threes?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

@@ -9,40 +9,56 @@ import './styles.css'
 export default async function HomePage() {
   const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
 
-  async function createUpdate(formData: FormData) {
+  async function createUpdate() {
     'use server'
     const payloadConfig = await config
     const payload = await getPayload({ config: payloadConfig })
     const transactionID = await payload.db.beginTransaction()
 
-    const { id } = await payload.create({
-      collection: 'events',
+    const { id: oneId } = await payload.create({
+      collection: 'ones',
       data: {
-        title: 'Titolo italiano',
+        title: 'Title',
       },
-      locale: 'it',
-      req: {
-        transactionID: transactionID!,
-      },
-    })
-    console.log(`Created document with ID: ${id}`)
-
-    const newDoc = await payload.update({
-      collection: 'events',
-      id,
-      data: {
-        title: 'English title',
-      },
-      locale: 'en',
       req: {
         transactionID: transactionID!,
       },
     })
 
-    console.log(`Updated document with ID: ${id}`)
+    const { id: twoId } = await payload.create({
+      collection: 'twos',
+      data: {
+        title: 'Title',
+      },
+      req: {
+        transactionID: transactionID!,
+      },
+    })
+
+    const { id: threeId } = await payload.create({
+      collection: 'threes',
+      data: {
+        title: 'Title',
+      },
+      req: {
+        transactionID: transactionID!,
+      },
+    })
+
+    const { id: fourId } = await payload.create({
+      collection: 'fours',
+      data: {
+        title: 'Title',
+        ones: [oneId],
+        twos: [twoId],
+        threes: [threeId],
+      },
+      req: {
+        transactionID: transactionID!,
+      },
+    })
 
     await payload.db.commitTransaction(transactionID!)
-    console.log(newDoc)
   }
 
   return (

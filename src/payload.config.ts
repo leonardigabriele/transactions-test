@@ -9,7 +9,10 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { Events } from './collections/Events'
+import { Ones } from './collections/Ones'
+import { Twos } from '@/collections/Twos'
+import { Threes } from '@/collections/Threes'
+import { Fours } from '@/collections/Fours'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,7 +24,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Events],
+  collections: [Users, Media, Ones, Twos, Threes, Fours],
   localization: {
     locales: ['en', 'it'],
     defaultLocale: 'en',
